@@ -22,7 +22,7 @@ def main():
         st.image("https://img.icons8.com/color/96/000000/book-shelf.png", width=80)
         st.title("AgriSensa Knowledge")
         
-        menu = st.radio("Kategori", ["Beranda", "🌱 Pupuk (Fertilizer)", "☠️ Pestisida (Pesticide)", "🤖 Rekomendasi Cerdas"])
+        menu = st.radio("Kategori", ["Beranda", "📊 Dashboard Pintar", "🌱 Pupuk (Fertilizer)", "☠️ Pestisida (Pesticide)", "🤖 Rekomendasi Cerdas"])
         
         st.info("Referensi Global Terpercaya untuk Praktik Pertanian Berkelanjutan.")
         st.caption("© 2026 AgriSensa - Encyclopedia")
@@ -30,6 +30,8 @@ def main():
     # Routing
     if menu == "Beranda":
         show_home()
+    elif "Dashboard" in menu:
+        show_smart_dashboard()
     elif "Pupuk" in menu:
         show_encyclopedia("fertilizers", "Ensiklopedi Pupuk")
     elif "Pestisida" in menu:
@@ -142,6 +144,95 @@ def show_encyclopedia(category, title):
             ui_components.render_fertilizer_card(item)
         else:
             ui_components.render_pesticide_card(item)
+
+def show_smart_dashboard():
+    st.title("📊 Dashboard Pintar AgriSensa")
+    st.markdown("Analisis data historis untuk keputusan pertanian yang lebih baik.")
+    
+    from modules.smart_dashboard import SmartDashboard
+    from modules.recommender import FertilizerRecommender
+    
+    dashboard = SmartDashboard()
+    
+    tab1, tab2, tab3 = st.tabs(["🗺️ Peta Produktivitas", "💰 Kalkulator Profitabilitas", "🧪 Rekomendasi Terlokalisasi"])
+    
+    # --- PRODUCTIVITY ---
+    with tab1:
+        st.subheader("Analisis Produktivitas Wilayah")
+        
+        prov_map, commodities = dashboard.get_location_options()
+        
+        if not commodities:
+            st.error("Data tidak tersedia.")
+        else:
+            selected_comm = st.selectbox("Pilih Komoditas:", commodities)
+            
+            if selected_comm:
+                stats = dashboard.get_productivity_stats(selected_comm)
+                
+                if not stats.empty:
+                    st.markdown(f"**Top 20 Daerah dengan Produktivitas Tertinggi untuk {selected_comm}**")
+                    st.bar_chart(stats, x="District", y="Production_KgHa", color="#2E7d32")
+                    
+                    best = stats.iloc[0]
+                    st.success(f"🏆 Daerah Terbaik: **{best['District']}, {best['Province']}** ({best['Production_KgHa']:.0f} Kg/Ha)")
+                else:
+                    st.info("Tidak ada data untuk komoditas ini.")
+
+    # --- PROFITABILITY ---
+    with tab2:
+        st.subheader("Simulasi Bisnis Tani")
+        
+        prov_map, commodities = dashboard.get_location_options()
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            prov = st.selectbox("Provinsi:", list(prov_map.keys()))
+            dist = st.selectbox("Kabupaten:", prov_map.get(prov, []))
+        with col2:
+            comm = st.selectbox("Komoditas:", commodities, key="p_comm")
+            area = st.number_input("Luas Lahan (Ha):", 0.1, 100.0, 1.0, 0.1)
+            
+        if st.button("🧮 Hitung Estimasi ROI"):
+            roi_data = dashboard.calculate_roi(prov, dist, comm, area)
+            
+            if roi_data:
+                res_col1, res_col2 = st.columns(2)
+                with res_col1:
+                    st.metric("Total Biaya (Estimasi)", f"Rp {roi_data['total_cost']:,.0f}")
+                    st.metric("Potensi Pendapatan", f"Rp {roi_data['total_revenue']:,.0f}")
+                with res_col2:
+                    profit_color = "normal" if roi_data['profit'] > 0 else "off"
+                    st.metric("Keuntungan Bersih", f"Rp {roi_data['profit']:,.0f}", delta=f"{roi_data['roi']:.1f}% ROI", delta_color=profit_color)
+                    st.caption(f"*Yield*: {roi_data['yield_ha']:.0f} Kg/Ha | *Harga*: Rp {roi_data['price_per_kg']:,}/Kg")
+            else:
+                st.warning("Data historis tidak ditemukan untuk kombinasi lokasi dan komoditas ini.")
+
+    # --- SMART REC ---
+    with tab3:
+        st.subheader("Rekomendasi Pupuk Berbasis Data")
+        st.info("Sistem akan mencari lokasi dengan karakteristik tanah mirip yang memiliki hasil panen tinggi.")
+        
+        c1, c2, c3, c4 = st.columns(4)
+        n = c1.number_input("N (Index)", 0, 200, 100)
+        p = c2.number_input("P (Index)", 0, 200, 100)
+        k = c3.number_input("K (Index)", 0, 200, 100)
+        ph = c4.number_input("pH Tanah", 0.0, 14.0, 6.5)
+        
+        if st.button("🔍 Cari Rekomendasi Historis"):
+            rec_fert = FertilizerRecommender()
+            res = rec_fert.get_data_driven_recommendation(n, p, k, ph)
+            
+            if res:
+                st.success(f"Ditemukan {res['match_count']} data lahan sukses yang mirip!")
+                st.markdown("### Rekomendasi Dosis:")
+                
+                col_d1, col_d2, col_d3 = st.columns(3)
+                col_d1.metric("Urea", f"{res['Urea']:.1f} Kg/Ha")
+                col_d2.metric("SP-36", f"{res['SP-36']:.1f} Kg/Ha")
+                col_d3.metric("KCl", f"{res['KCl']:.1f} Kg/Ha")
+            else:
+                st.warning("Data referensi tidak cukup.")
 
 if __name__ == "__main__":
     main()

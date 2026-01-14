@@ -7,6 +7,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(BASE_DIR, "data")
 CROP_DATA_PATH = os.path.join(DATA_DIR, "crop_recommendation.csv")
 FERT_DATA_PATH = os.path.join(DATA_DIR, "fertilizer_recommendation.csv")
+REAL_FERT_DATA_PATH = os.path.join(DATA_DIR, "dataset_untuk_rekomendasi_pupuk.csv")
 
 class CropRecommender:
     def __init__(self):
@@ -56,9 +57,13 @@ class FertilizerRecommender:
     def __init__(self):
         if os.path.exists(FERT_DATA_PATH):
             self.df = pd.read_csv(FERT_DATA_PATH)
-            # Clean up column names if needed
         else:
             self.df = pd.DataFrame()
+            
+        if os.path.exists(REAL_FERT_DATA_PATH):
+            self.real_df = pd.read_csv(REAL_FERT_DATA_PATH)
+        else:
+            self.real_df = pd.DataFrame()
 
     def get_crop_list(self):
         """Return list of supported crops."""
@@ -114,4 +119,49 @@ class FertilizerRecommender:
             "target": {"N": target_n, "P": target_p, "K": target_k, "pH": target_ph},
             "deficit": {"N": def_n, "P": def_p, "K": def_k},
             "advice": advice
+        }
+
+    def get_data_driven_recommendation(self, n, p, k, ph):
+        """
+        Get recommendations based on historical successful yield data.
+        Finds the closest soil matches in the dataset.
+        """
+        if self.real_df.empty:
+            return None
+            
+        # Features to match: Soil_pH, Soil_N_index, Soil_P_index, Soil_K_index
+        # Note: 'index' in dataset might be scaled differently than raw ppm.
+        # Assuming input is raw numeric comparable to dataset or we need normalization.
+        # Let's inspect dataset values in logic (or assume raw values for now as per plan).
+        
+        # Simple Euclidean distance on soil properties
+        # Target Features
+        features = ['Soil_pH', 'Soil_N_index', 'Soil_P_index', 'Soil_K_index']
+        
+        # Drop rows with missing values in features
+        df_clean = self.real_df.dropna(subset=features)
+        
+        if df_clean.empty:
+            return None
+            
+        data_matrix = df_clean[features].values
+        input_vector = np.array([ph, n, p, k])
+        
+        # Calculate distances
+        distances = np.linalg.norm(data_matrix - input_vector, axis=1)
+        
+        # Get top 5 closest matches
+        top_indices = np.argsort(distances)[:5]
+        top_matches = df_clean.iloc[top_indices]
+        
+        # Calculate average recommendation from these top matches
+        avg_urea = top_matches['Pupuk_Urea_kgHa'].mean()
+        avg_sp36 = top_matches['Pupuk_SP36_kgHa'].mean()
+        avg_kcl = top_matches['Pupuk_KCl_kgHa'].mean()
+        
+        return {
+            "Urea": avg_urea,
+            "SP-36": avg_sp36,
+            "KCl": avg_kcl,
+            "match_count": len(top_matches)
         }
