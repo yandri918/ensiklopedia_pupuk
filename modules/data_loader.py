@@ -35,3 +35,51 @@ def search_items(category, query):
         if query in item["name"].lower() or query in item.get("description", "").lower():
             results.append(item)
     return results
+
+def load_pesticide_csv(pest_type="umum"):
+    """
+    Load pesticide data from CSV.
+    :param pest_type: 'umum', 'teknis', or 'ekspor'
+    :return: Pandas DataFrame
+    """
+    file_map = {
+        "umum": "pestisida_umum.csv",
+        "teknis": "pestisida_teknis.csv",
+        "ekspor": "pestisida_ekspor.csv"
+    }
+    
+    filename = file_map.get(pest_type, "pestisida_umum.csv")
+    file_path = os.path.join(DATA_DIR, filename)
+    
+    if not os.path.exists(file_path):
+        return pd.DataFrame()
+        
+    try:
+        df = pd.read_csv(file_path)
+        
+        # Clean column names (strip spaces, lowercase)
+        df.columns = df.columns.str.strip().str.lower()
+        
+        # Normalize columns
+        # Original: ['no', 'merek dagang', 'bahan aktif', 'deskrispi', 'pembuat']
+        # Target: ['Name', 'Active_Ingredient', 'Description', 'Manufacturer']
+        
+        column_map = {
+            'merek dagang': 'Name',
+            'bahan aktif': 'Active_Ingredient',
+            'deskrispi': 'Description', # Handle typo in CSV
+            'deskripsi': 'Description', # Or correct spelling
+            'pembuat': 'Manufacturer',
+            'no': 'No'
+        }
+        
+        df = df.rename(columns=column_map)
+        
+        # Select relevant columns
+        cols = ['Name', 'Active_Ingredient', 'Description', 'Manufacturer']
+        available_cols = [c for c in cols if c in df.columns]
+        
+        return df[available_cols]
+    except Exception as e:
+        print(f"Error loading pesticide CSV: {e}")
+        return pd.DataFrame()

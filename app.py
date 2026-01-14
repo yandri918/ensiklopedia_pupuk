@@ -131,6 +131,33 @@ def show_encyclopedia(category, title):
     # Search
     query = st.text_input("🔍 Cari (Nama/Deskripsi)...", placeholder=f"Cari dalam {title}...")
     
+    if category == "pesticides":
+        t1, t2 = st.tabs(["⭐ Populer (Kurasi)", "💊 Database Kementan (Lengkap)"])
+        
+        with t1:
+            render_card_list(category, query)
+            
+        with t2:
+            st.markdown("### Database Hama & Penyakit (1800+ Entri)")
+            p_type = st.radio("Jenis Pestisida:", ["umum", "teknis", "ekspor"], horizontal=True, format_func=lambda x: x.title())
+            
+            df_pest = data_loader.load_pesticide_csv(p_type)
+            
+            if not df_pest.empty:
+                # Search within dataframe
+                if query:
+                    mask = df_pest.apply(lambda x: x.astype(str).str.contains(query, case=False).any(), axis=1)
+                    df_pest = df_pest[mask]
+                
+                st.dataframe(df_pest, use_container_width=True, hide_index=True)
+                st.caption(f"Menampilkan {len(df_pest)} data dari database resmi.")
+            else:
+                st.warning("Database sedang memuat atau kosong.")
+    else:
+        # Standard view for Fertilizers
+        render_card_list(category, query)
+
+def render_card_list(category, query):
     if query:
         items = data_loader.search_items(category, query)
     else:
