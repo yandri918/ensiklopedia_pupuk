@@ -1,0 +1,70 @@
+[
+    {
+        "id": "urea-subsidi",
+        "name": "Urea (Nitrogen 46%)",
+        "type": "Kimia (Tunggal)",
+        "category": "Makro - Nitrogen",
+        "nutrient_content": {
+            "N": "46%"
+        },
+        "description": "Pupuk higroskopis berbentuk butiran kristal putih yang merupakan sumber Nitrogen utama bagi tanaman. Nitrogen sangat penting untuk pertumbuhan vegetatif (daun dan batang).",
+        "functions": [
+            "Memacu pertumbuhan daun agar lebih hijau dan segar.",
+            "Meningkatkan kadar protein dalam tanaman.",
+            "Mempercepat pertumbuhan tinggi tanaman."
+        ],
+        "application_guide": "Dibenamkan ke dalam tanah di sekitar perakaran sedalam 5-10 cm untuk mengurangi penguapan (volatilisasi). Waktu terbaik adalah pagi atau sore hari.",
+        "precautions": "Jangan dicampur langsung dengan kapur pertanian atau pupuk kalsium karena dapat memicu hilangnya Nitrogen dalam bentuk gas amonia.",
+        "references": [
+            "Kamentan RI",
+            "IFA (International Fertilizer Association)"
+        ]
+    },
+    {
+        "id": "npk-16-16-16",
+        "name": "NPK Mutiara 16-16-16",
+        "type": "Kimia (Majemuk)",
+        "category": "Makro - Seimbang",
+        "nutrient_content": {
+            "N": "16%",
+            "P2O5": "16%",
+            "K2O": "16%"
+        },
+        "description": "Pupuk majemuk seimbang yang mengandung Nitrogen, Fosfat, dan Kalium. Cocok untuk fase vegetatif maupun generatif awal.",
+        "functions": [
+            "Menyediakan nutrisi lengkap dalam satu aplikasi.",
+            "Meningkatkan kualitas akar, batang, dan bunga.",
+            "Mencegah kerontokan bunga dan buah."
+        ],
+        "application_guide": "Dapat ditabur atau dilarutkan (dikocor). Untuk kocor: larutkan 10-20 gram per liter air.",
+        "precautions": "Simpan di tempat kering dan tertutup rapat karena mudah menyerap air.",
+        "references": [
+            "Yara International",
+            "Petunjuk Teknis Budidaya"
+        ]
+    },
+    {
+        "id": "kompos-organik",
+        "name": "Kompos Organik (Matang)",
+        "type": "Organik",
+        "category": "Pembenah Tanah",
+        "nutrient_content": {
+            "C-Organik": ">15%",
+            "C/N Ratio": "10-20",
+            "N": "1-3%",
+            "P": "0.5-1%",
+            "K": "1-2%"
+        },
+        "description": "Hasil dekomposisi bahan organik (sisa tanaman/hewan) yang telah stabil. Berfungsi utama memperbaiki sifat fisik, kimia, dan biologi tanah.",
+        "functions": [
+            "Meningkatkan daya ikat air tanah (WHC).",
+            "Menyediakan makanan bagi mikroba tanah.",
+            "Menggemburkan tanah yang padat/liat."
+        ],
+        "application_guide": "Campurkan dengan tanah saat pengolahan lahan (dosis 10-20 ton/ha) atau sebagai penutup tanah (mulsa). Pastikan kompos sudah matang (warna hitam, tidak berbau busuk).",
+        "precautions": "Penggunaan kompos yang belum matang (C/N ratio tinggi) dapat menyebabkan fenomena 'Nitrogen Robbing' (tanaman kekurangan N).",
+        "references": [
+            "Balittanah (Balai Penelitian Tanah)"
+        ]
+    }
+]

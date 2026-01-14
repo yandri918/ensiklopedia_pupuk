@@ -1,0 +1,84 @@
+[
+    {
+        "id": "ins-deltamethrin",
+        "name": "Deltamethrin (Decis)",
+        "type": "Kimia",
+        "target": "Insektisida (Serangga)",
+        "active_ingredient": "Deltamethrin 25 g/L",
+        "mode_of_action": "Kontak dan Lambung (Saraf)",
+        "description": "Insektisida racun kontak dan lambung berbentuk pekatan yang dapat diemulsikan. Efektif membunuh serangga dengan cara melumpuhkan sistem sarafnya.",
+        "target_pests": [
+            "Ulat Grayak",
+            "Belalang",
+            "Kutu Daun",
+            "Wereng"
+        ],
+        "application_guide": "Semprotkan saat populasi hama mencapai ambang batas ekonomi. Fokus pada bagian tanaman yang terserang. Jangan lakukan penyemprotan saat angin kencang.",
+        "precautions": "Berbahaya bagi lebah dan organisme air. Jangan gunakan saat tanaman sedang berbunga lebat.",
+        "safety_level": "Kelas II (Kuning) - Berbahaya",
+        "references": [
+            "IRAC (Insecticide Resistance Action Committee)",
+            "Label Produk"
+        ]
+    },
+    {
+        "id": "fun-mancozeb",
+        "name": "Mancozeb (Dithane)",
+        "type": "Kimia",
+        "target": "Fungisida (Jamur)",
+        "active_ingredient": "Mancozeb 80%",
+        "mode_of_action": "Kontak (Protektif)",
+        "description": "Fungisida kontak berspektrum luas untuk mengendalikan penyakit jamur. Bekerja dengan membentuk lapisan pelindung pada permukaan daun.",
+        "target_pests": [
+            "Busuk Tawar (Phytophthora)",
+            "Bercak Daun",
+            "Antraknosa"
+        ],
+        "application_guide": "Aplikasi preventif (pencegahan) setiap 7-10 hari sekali, atau kuratif saat gejala awal muncul. Pastikan seluruh permukaan daun terlapisi rata.",
+        "precautions": "Jangan dicampur dengan pestisida berbahan aktif tembaga atau belerang dalam konsentrasi tinggi.",
+        "safety_level": "Kelas U (Biru/Hijau) - Cukup Aman jika sesuai dosis",
+        "references": [
+            "FRAC (Fungicide Resistance Action Committee)"
+        ]
+    },
+    {
+        "id": "her-glyphosate",
+        "name": "Glifosat (Roundup)",
+        "type": "Kimia",
+        "target": "Herbisida (Gulma)",
+        "active_ingredient": "Isopropylamine Glyphosate 480 g/L",
+        "mode_of_action": "Sistemik Purna Tumbuh",
+        "description": "Herbisida sistemik non-selektif. Diserap melalui daun dan ditranslokasikan ke seluruh bagian tumbuhan hingga ke akar. Mematikan gulma secara perlahan (7-14 hari total mati).",
+        "target_pests": [
+            "Alang-alang",
+            "Teki",
+            "Gulma Berdaun Lebar"
+        ],
+        "application_guide": "Semprotkan pada gulma yang sedang tumbuh aktif (fase vegetatif). Hindari mengenai tanaman utama karena akan mati.",
+        "precautions": "Gunakan corong pelindung pada nozzle saat menyemprot di sela-sela tanaman budidaya.",
+        "safety_level": "Kelas III (Biru) - Perhatian",
+        "references": [
+            "HRAC (Herbicide Resistance Action Committee)"
+        ]
+    },
+    {
+        "id": "bio-trichoderma",
+        "name": "Trichoderma spp. (Bio-Fungisida)",
+        "type": "Organik / Hayati",
+        "target": "Fungisida (Jamur Patogen)",
+        "active_ingredient": "Spora Trichoderma harzianum",
+        "mode_of_action": "Kompetisi & Hiperparasitisme",
+        "description": "Agen hayati berupa jamur antagonis yang melawan jamur patogen tular tanah (soil-borne). Melindungi akar tanaman.",
+        "target_pests": [
+            "Fusarium (Layu)",
+            "Ganoderma",
+            "Rebah Semai (Pythium)"
+        ],
+        "application_guide": "Campurkan pada kompos atau media tanam sebelum tanam. Bisa juga dikocorkan ke pangkal batang.",
+        "precautions": "Jangan dicampur dengan fungisida kimia karena akan membunuh spora Trichoderma.",
+        "safety_level": "Hijau - Aman bagi Lingkungan",
+        "references": [
+            "Balai Perlindungan Tanaman"
+        ]
+    }
+]
